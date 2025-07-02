@@ -1,0 +1,79 @@
+@model HarmonySound.MVC.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Register - HarmonySound</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- CSS global -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2>Register</h2>
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div>
+                    @Html.LabelFor(m => m.Name, "Full Name")
+                    @Html.TextBoxFor(m => m.Name, new { @placeholder = "Enter your full name" })
+                    @Html.ValidationMessageFor(m => m.Name)
+                </div>
+
+                <div>
+                    @Html.LabelFor(m => m.Email, "Email")
+                    @Html.TextBoxFor(m => m.Email, new { @placeholder = "Enter your email" })
+                    @Html.ValidationMessageFor(m => m.Email)
+                </div>
+
+                <div>
+                    @Html.LabelFor(m => m.Password, "Password")
+                    @Html.PasswordFor(m => m.Password, new { @placeholder = "Enter a password" })
+                    @Html.ValidationMessageFor(m => m.Password)
+                </div>
+
+                <div>
+                    @Html.LabelFor(m => m.ConfirmPassword, "Confirm Password")
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @placeholder = "Confirm your password" })
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword)
+                </div>
+
+                <div>
+                    @Html.LabelFor(m => m.Role, "Account Type")
+                    @Html.DropDownListFor(
+                    m => m.Role,
+                                new SelectList(Model.Roles ?? new List<string>()),
+                                "Select account type",
+                                new { @class = "form-control" }
+                                )
+                @Html.ValidationMessageFor(m => m.Role)
+            </div>
+
+            <br />
+            <button type="submit">Register</button>
+
+            <p class="mt-3 text-center">
+                Already have an account? <a href="@Url.Action("Login", "Account")">Login here</a>
+            </p>
+
+            @Html.ValidationSummary(true)
+                        }
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+

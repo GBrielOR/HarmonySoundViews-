@@ -1,0 +1,49 @@
+﻿@model HarmonySound.MVC.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Login - HarmonySound</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- CSS global -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2>Login</h2>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div>
+                    @Html.LabelFor(m => m.Email, "Email")
+                    @Html.TextBoxFor(m => m.Email, new { @placeholder = "Email" })
+                    @Html.ValidationMessageFor(m => m.Email)
+                </div>
+                <div>
+                    @Html.LabelFor(m => m.Password, "Password")
+                    @Html.PasswordFor(m => m.Password, new { @placeholder = "Password" })
+                    @Html.ValidationMessageFor(m => m.Password)
+                </div>
+                <button type="submit">Sign In</button>
+                <p class="mt-3 text-center">
+                    Don't have an account? <a href="@Url.Action("Register", "Account")">Register here</a>
+                </p>
+                @Html.ValidationSummary(true)
+            }
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

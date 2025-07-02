@@ -1,0 +1,58 @@
+﻿@model HarmonySound.Models.Statistic
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Statistic</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContentId" class="control-label"></label>
+                <input asp-for="ContentId" class="form-control" />
+                <span asp-validation-for="ContentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Reproductions" class="control-label"></label>
+                <input asp-for="Reproductions" class="form-control" />
+                <span asp-validation-for="Reproductions" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Likes" class="control-label"></label>
+                <input asp-for="Likes" class="form-control" />
+                <span asp-validation-for="Likes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comments" class="control-label"></label>
+                <input asp-for="Comments" class="form-control" />
+                <span asp-validation-for="Comments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReportDate" class="control-label"></label>
+                <input asp-for="ReportDate" class="form-control" />
+                <span asp-validation-for="ReportDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
