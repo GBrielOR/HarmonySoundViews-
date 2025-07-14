@@ -1,0 +1,61 @@
+﻿@model IEnumerable<HarmonySound.API.DTOs.PlaylistDto>
+@{
+    var songs = ViewBag.Songs as List<HarmonySound.Models.Content>;
+}
+
+<h2>Playlists existentes</h2>
+<a asp-action="Create" class="btn btn-primary mb-3">Crear nueva Playlist</a>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+@foreach (var playlist in Model)
+{
+    <div class="card mb-4 shadow">
+        <div class="card-body">
+            <h5 class="card-title playlist-title">@playlist.Name</h5>
+            <form asp-action="AddToPlaylist" method="post" class="form-inline mb-2">
+                <input type="hidden" name="playlistId" value="@playlist.Id" />
+                <select name="contentId" class="form-control mr-2" required>
+                    <option value="">Selecciona una canción</option>
+                    @if (songs != null)
+                    {
+                        foreach (var song in songs)
+                        {
+                            <option value="@song.Id">@song.Title</option>
+                        }
+                    }
+                </select>
+                <button type="submit" class="btn btn-success btn-sm">Agregar canción</button>
+            </form>
+            <ul class="list-group">
+                @if (playlist.Songs != null && playlist.Songs.Any())
+                {
+                    foreach (var song in playlist.Songs)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            @song.Title
+                            @if (!string.IsNullOrEmpty(song.UrlMedia))
+                            {
+                                <audio controls style="height: 30px; max-width: 200px;">
+                                    <source src="@song.UrlMedia" type="audio/mpeg" />
+                                    Tu navegador no soporta el elemento de audio.
+                                </audio>
+                            }
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li class="list-group-item">No hay canciones en esta playlist.</li>
+                }
+            </ul>
+        </div>
+    </div>
+}

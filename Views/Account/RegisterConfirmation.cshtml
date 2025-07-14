@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Confirm your email";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Confirm your email - HarmonySound</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+<body>
+    <div class="auth-container">
+        <div class="auth-card text-center">
+            <h2>Check your email</h2>
+            <p>
+                Enviamos un enlace para verificar tu correo.<br />
+                Por favor verifica tu correo para activar tu cuenta.
+            </p>
+            <a href="@Url.Action("Login", "Account")" class="btn btn-primary mt-3">Volver al inicio de sesión</a> <!-- Updated link text -->
+        </div>
+    </div>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

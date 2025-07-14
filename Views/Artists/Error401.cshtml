@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "Sesión no válida";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="alert alert-danger mt-5 text-center">
+    <h2>Acceso no autorizado</h2>
+    <p>@ViewBag.Error</p>
+    <a href="@Url.Action("Logout", "Account")" class="btn btn-danger mt-3">Cerrar sesión e intentar de nuevo</a>
+</div>

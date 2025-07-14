@@ -1,0 +1,17 @@
+﻿@model HarmonySound.Models.Playlist
+
+@{
+    ViewData["Title"] = "Crear Playlist";
+}
+
+<h2>Crear nueva Playlist</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="Name">Nombre de la Playlist</label>
+        <input asp-for="Name" class="form-control" required />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-success">Crear</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

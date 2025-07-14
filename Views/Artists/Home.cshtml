@@ -1,0 +1,37 @@
+﻿@model HarmonySound.MVC.Models.ProfileEditViewModel
+
+@{
+    ViewData["Title"] = "Welcome Artist";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-container text-center">
+    <h1 class="page-title">Welcome, @Model.Name!</h1>
+
+    @if (ViewBag.Success != null)
+    {
+        <div class="alert alert-success">@ViewBag.Success</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div>
+        @if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+        {
+            <img src="@Model.ProfileImageUrl" alt="Profile Image" class="rounded-circle mb-3" style="width: 160px; height: 160px; object-fit: cover;" />
+        }
+        else
+        {
+            <img src="~/images/default-profile.png" alt="Profile Image" class="rounded-circle mb-3" style="width: 160px; height: 160px; object-fit: cover;" />
+        }
+    </div>
+    <p class="page-description">
+        @Model.Biography
+    </p>
+    <p class="text-muted">@Model.Email</p>
+    <a href="@Url.Action("EditProfile", "Artists")" class="btn btn-primary mb-2">Edit Profile</a>
+    <a href="@Url.Action("Index", "Artists")" class="btn-green">Upload Songs</a>
+    <a href="@Url.Action("Index", "Albums")" class="btn btn-info mb-2">My Albums</a>
+</div>

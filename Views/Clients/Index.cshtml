@@ -1,0 +1,22 @@
+﻿@model IEnumerable<HarmonySound.Models.Content>
+
+@{
+    ViewData["Title"] = "Contenido de Audio";
+}
+
+<h2>Contenido de Audio</h2>
+
+@foreach (var item in Model)
+{
+    <div class="audio-item" style="margin-bottom: 2em;">
+        <h4>@item.Title</h4>
+        <audio controls style="width: 100%;">
+            <source src="@item.UrlMedia" type="audio/mpeg" />
+            Tu navegador no soporta el elemento de audio.
+        </audio>
+        <div>
+            <small>Duración: @item.Duration</small>
+        </div>
+    </div>
+}
+

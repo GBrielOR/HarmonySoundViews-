@@ -1,0 +1,77 @@
+﻿@model IEnumerable<HarmonySound.Models.Content>
+
+@{
+    ViewData["Title"] = "Subir nuevo contenido";
+}
+
+<link rel="stylesheet" href="~/css/artist.css" />
+
+
+<div class="container">
+    <h2 class="text-center">Subir nuevo contenido</h2>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <!-- Formulario para subir contenido -->
+    @using (Html.BeginForm("UploadAudio", "Artists", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <label for="Title">Título</label>
+            <input type="text" name="Title" class="form-control" placeholder="Escribe el título del contenido" required />
+        </div>
+
+        <div class="form-group">
+            <label for="File">Archivo de audio</label>
+            <input type="file" name="File" class="form-control" accept=".mp3,.wav,.ogg,.flac,.aac,.m4a,audio/*" required />
+            <small class="form-text text-muted">Formatos permitidos: mp3, wav, ogg, flac, aac, m4a. Tamaño máximo: 200 MB.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="Type">Tipo</label>
+            <input type="text" name="Type" class="form-control" placeholder="Ej: Canción, Podcast" />
+        </div>
+
+        <input type="hidden" name="ArtistId" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" />
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Subir</button>
+        </div>
+    }
+
+    <hr />
+
+    <h3 class="text-center">Mis contenidos</h3>
+    @if (Model != null && Model.Any())
+    {
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>@item.Title</h5>
+                            <audio controls style="width: 100%;">
+                                <source src="@item.UrlMedia" type="audio/mpeg" />
+                                Tu navegador no soporta el elemento de audio.
+                            </audio>
+                            <p>Duración: @item.Duration</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No tienes contenido disponible.</p>
+    }
+</div>

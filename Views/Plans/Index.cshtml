@@ -1,59 +1,44 @@
-﻿@model IEnumerable<HarmonySound.Models.Plan>
+﻿@model HarmonySound.MVC.Models.SubscriptionViewModel
 
-@{
-    ViewData["Title"] = "Index";
+<h2>Subscription Management</h2>
+
+@if (Model.CurrentPlan != null)
+{
+    <div class="alert alert-info">
+        <strong>Your current plan:</strong> @Model.CurrentPlan.PlanName
+        @if (Model.CurrentPlan.Price == 0)
+        {
+            <span class="badge bg-warning text-dark">With ads</span>
+        }
+        else
+        {
+            <span class="badge bg-success">No ads</span>
+            <span class="badge bg-primary">Account limit: @Model.CurrentPlan.AccountLimit</span>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-warning">You currently have the Free plan (with ads).</div>
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PlanName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AccountLimit)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PlanName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccountLimit)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id}) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<h3>Premium Plans</h3>
+<div class="row">
+    @foreach (var plan in Model.PremiumPlans)
+    {
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-body plan-card">
+                    <h5 class="card-title">@plan.PlanName</h5>
+                    <p>@plan.Description</p>
+                    <p><strong>Price:</strong> $@plan.Price</p>
+                    <p><strong>Account limit:</strong> @plan.AccountLimit</p>
+                    <form asp-action="Subscribe" method="post">
+                        <input type="hidden" name="planId" value="@plan.Id" />
+                        <button type="submit" class="btn btn-success">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>

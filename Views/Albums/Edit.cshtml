@@ -1,48 +1,58 @@
-﻿@model HarmonySound.Models.Album
+﻿@model HarmonySound.API.DTOs.AlbumDto
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Album";
+    // Se espera que ViewBag.AllSongs sea List<ContentDto>
+    var allSongs = ViewBag.AllSongs as List<HarmonySound.API.DTOs.ContentDto>;
 }
 
-<h1>Edit</h1>
+<h2>Edit Album</h2>
 
-<h4>Album</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreationDate" class="control-label"></label>
-                <input asp-for="CreationDate" class="form-control" />
-                <span asp-validation-for="CreationDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ArtistId" class="control-label"></label>
-                <input asp-for="ArtistId" class="form-control" />
-                <span asp-validation-for="ArtistId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group mb-3">
+        <label asp-for="Title" class="form-label">Album Name</label>
+        <input asp-for="Title" class="form-control" maxlength="20" required />
+        <span asp-validation-for="Title" class="text-danger"></span>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="form-group mb-3">
+        <label class="form-label">Select Songs for this album</label>
+        <select name="selectedSongIds" class="form-select" multiple size="8">
+            @if (allSongs != null)
+            {
+                foreach (var song in allSongs)
+                {
+                    var selected = Model.Contents != null && Model.Contents.Any(c => c.Id == song.Id) ? "selected" : "";
+                    <option value="@song.Id" (selected)>@song.Title (@song.Type)</option>
+                }
+            }
+        </select>
+        <small class="form-text text-muted">Mantén presionada Ctrl (Windows) o Cmd (Mac) para seleccionar varias canciones.</small>
+    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <div class="form-group mb-3">
+        <label class="form-label">Songs currently in this album</label>
+        <ul class="list-group">
+            @if (Model.Contents != null && Model.Contents.Any())
+            {
+                foreach (var song in Model.Contents)
+                {
+                    <li class="list-group-item d-flex align-items-center">
+                        @song.Title
+                        <span class="ms-auto text-muted">@song.Type</span>
+                    </li>
+                }
+            }
+            else
+            {
+                <li class="list-group-item">No songs in this album.</li>
+            }
+        </ul>
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-success">Save Changes</button>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+    </div>
+</form>

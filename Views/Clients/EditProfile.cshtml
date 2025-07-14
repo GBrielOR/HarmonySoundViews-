@@ -1,0 +1,46 @@
+﻿@model HarmonySound.MVC.Models.ProfileEditViewModel
+
+<h2>Edit Profile</h2>
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+<div class="alert alert-success">@TempData["Success"]</div>
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+@using (Html.BeginForm("EditProfile", "Clients", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="form-group">
+        <label asp-for="Email">Email</label>
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @readonly = "readonly" })
+        @Html.HiddenFor(m => m.Email)
+        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label asp-for="Name">Name</label>
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label asp-for="Biography">Biography</label>
+        @Html.TextAreaFor(m => m.Biography, new { @class = "form-control", rows = 4 })
+        @Html.ValidationMessageFor(m => m.Biography, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label asp-for="ProfileImageFile">Profile Image</label><br />
+        @if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+        {
+            <img src="@Model.ProfileImageUrl" alt="Profile Image" style="max-width: 150px; max-height: 150px;" />
+    
+            <br />
+        }
+        <input asp-for="ProfileImageFile" type="file" class="form-control-file" accept="image/*" />
+        @Html.ValidationMessageFor(m => m.ProfileImageFile, "", new { @class = "text-danger" })
+    </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+}

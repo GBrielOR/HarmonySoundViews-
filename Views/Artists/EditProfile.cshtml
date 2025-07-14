@@ -1,0 +1,57 @@
+﻿@model HarmonySound.MVC.Models.ProfileEditViewModel
+
+@{
+    ViewData["Title"] = "Edit Artist Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>Edit Profile</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <div>@error.ErrorMessage</div>
+            }
+        </div>
+    }
+
+    <form asp-action="EditProfile" enctype="multipart/form-data" method="post">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+        <div class="form-group">
+            <label>Name</label>
+            <input asp-for="Name" class="form-control" />
+            @Html.ValidationMessageFor(m => m.Name)
+        </div>
+        <div class="form-group">
+            <label>Biography</label>
+            <textarea asp-for="Biography" class="form-control"></textarea>
+            @Html.ValidationMessageFor(m => m.Biography)
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input asp-for="Email" class="form-control" readonly />
+        </div>
+        <div class="form-group">
+            <label>Profile Image</label>
+            <input asp-for="ProfileImageFile" type="file" class="form-control" accept="image/*" />
+            @if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+            {
+                <img src="@Model.ProfileImageUrl" class="rounded mt-2" style="width: 100px; height: 100px; object-fit: cover;" alt="Profile Image" />
+            }
+        </div>
+        <button type="submit" class="btn btn-success">Save Changes</button>
+        <a asp-action="Home" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

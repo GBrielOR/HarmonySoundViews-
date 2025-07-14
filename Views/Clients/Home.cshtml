@@ -1,0 +1,88 @@
+﻿@model HarmonySound.MVC.Models.SearchResultsViewModel
+
+@{
+    ViewData["Title"] = "Welcome Client";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-3 text-center">
+        @if (!string.IsNullOrEmpty(Model.Profile?.ProfileImageUrl))
+        {
+            <img src="@Model.Profile.ProfileImageUrl" alt="Profile Image" class="img-thumbnail" style="max-width: 180px; max-height: 180px;" />
+        }
+        else
+        {
+            <img src="~/images/default-profile.png" alt="Profile Image" class="img-thumbnail" style="max-width: 180px; max-height: 180px;" />
+        }
+        <br /><br />
+        <a href="@Url.Action("EditProfile", "Clients")" class="btn btn-primary w-100">Edit Profile</a>
+    </div>
+    <div class="col-md-9">
+        <h1 class="page-title">Welcome to Harmony Sound</h1>
+        <p class="page-description">
+            Discover and listen to music uploaded by your favorite artists. Explore content tailored for you.
+        </p>
+        <a href="@Url.Action("Index", "Clients")" class="btn-green">Go to Music Library</a>
+        <a href="@Url.Action("Index", "Playlists")" class="btn-green" style="margin-left: 10px;">Manage Playlists</a>
+        <a href="@Url.Action("Index", "Plans")" class="btn-green" style="margin-left: 10px;">Manage Subscription</a>
+
+        <hr />
+
+        <!-- Formulario de búsqueda -->
+        <form asp-action="Home" method="get" class="mb-4 mt-4">
+            <input type="text" name="query" value="@Model.Query" placeholder="Buscar artistas o canciones..." class="form-control" />
+            <button type="submit" class="btn btn-primary mt-2">Buscar</button>
+        </form>
+
+        <!-- Resultados de búsqueda -->
+        @if (!string.IsNullOrWhiteSpace(Model.Query))
+        {
+            if (Model.Artists?.Any() == true)
+            {
+                <h4>Artistas encontrados</h4>
+                <ul>
+                    @foreach (var artist in Model.Artists)
+                    {
+                        <li>@artist.Name</li> <!-- Email oculto -->
+                    }
+                </ul>
+            }
+            if (Model.Contents?.Any() == true)
+            {
+                <h4>Contenidos encontrados</h4>
+                <ul>
+                    @foreach (var content in Model.Contents)
+                    {
+                        <li>
+                            @content.Title (@content.Type)
+                            @if (!string.IsNullOrEmpty(content.UrlMedia))
+                            {
+                                <br />
+                                <audio controls style="width: 250px;">
+                                    <source src="@content.UrlMedia" type="audio/mpeg" />
+                                    Tu navegador no soporta el elemento de audio.
+                                </audio>
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+            if ((Model.Artists == null || !Model.Artists.Any()) && (Model.Contents == null || !Model.Contents.Any()))
+            {
+                <p>No se encontraron resultados para "@Model.Query".</p>
+            }
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var success = '@ViewBag.Success';
+            if (success) {
+                alert(success);
+            }
+        });
+    </script>
+}
